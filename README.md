@@ -1,4 +1,3 @@
-# machine-learning-ucsc-extension
 # Exercises for Machine Learning course at UCSC Extension
 
 ## Description of Python packages
