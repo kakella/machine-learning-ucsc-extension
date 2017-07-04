@@ -1,5 +1,7 @@
 import itertools as it
 
+import numpy as np
+
 from classifiers import bayesian as by
 from excelHelper import excelOperations as eo
 from histogram import histogram as hg
