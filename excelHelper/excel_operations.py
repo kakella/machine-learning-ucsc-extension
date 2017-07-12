@@ -27,10 +27,10 @@ def getSheetNames(excelFile):
     return (ExcelFile(excelFile)).sheet_names
 
 
-def writeExcelData(data, index, excelFile, sheetName, startRow, startCol):
+def writeExcelData(data, excelFile, sheetName, startRow, startCol):
     from pandas import DataFrame, ExcelWriter
     from openpyxl import load_workbook
-    df = DataFrame(data=data, index=index)
+    df = DataFrame(data=data)
     book = load_workbook(excelFile)
     writer = ExcelWriter(excelFile, engine='openpyxl')
     writer.book = book
