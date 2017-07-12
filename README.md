@@ -5,6 +5,9 @@
 ### excelHelper
 Contains helper functions for reading and writing Microsoft Excel files
 
+### prepare_data
+Reformats the excel input data into a standard format for running Classification algorithms
+
 ### statistics
 Contains functions for calculating common statistics values such as mean, variance, standard deviation
 
