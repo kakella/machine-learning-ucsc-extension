@@ -12,7 +12,7 @@ Reformats the excel input data into a standard format for running Classification
 Contains functions for calculating common statistics values such as mean, variance, standard deviation
 
 ### histogram
-Contains functions for calculating histogram of values in an input sample set
+Contains functions for calculating histograms
 
 ### classifiers
 Contains functions for creating different classifiers eg. Bayesian Classifier

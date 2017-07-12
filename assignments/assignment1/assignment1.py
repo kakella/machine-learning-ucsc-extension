@@ -3,8 +3,6 @@ from excelHelper import excel_operations as eo
 from histogram import histogram as hg
 from prepare_data import classification_problems as cp
 
-num_of_bins_to_create = 32
-
 inputExcelFile = r"Assignment_1_Data_and_Template - Input.xlsx"
 outputExcelFile = r"Assignment_1_Data_and_Template - Output.xlsx"
 
