@@ -5,7 +5,7 @@ from histogram import histogram as hg
 from prepare_data import classification_problems as cp
 
 inputExcelFile = r"Assignment_2_Data_and_Template - Input.xlsx"
-outputExcelFile = r"Assignment_2_Data_and_Template - Output.xlsx"
+outputExcelFile = r"Assignment_2_Data_and_Template - Output - Alternate.xlsx"
 
 raw_data = eo.readExcel(inputExcelFile)
 label_column_index = 0
@@ -40,24 +40,30 @@ bayesian_histogram = hg.create_histogram_from_bayesian_params(data, num_of_bins)
 print('bayesian histogram')
 print(bayesian_histogram)
 
-# eo.writeExcelData(data={index: item for index, item in enumerate(histogram['Female'])},
-#                   excelFile=outputExcelFile,
-#                   sheetName='Female Histogram',
-#                   startRow=7,
-#                   startCol=2)
-# eo.writeExcelData(data={index: item for index, item in enumerate(histogram['Male'])},
-#                   excelFile=outputExcelFile,
-#                   sheetName='Male Histogram',
-#                   startRow=7,
-#                   startCol=2)
-#
-# eo.writeExcelData(data={index: item for index, item in enumerate(bayesian_histogram['Female'])},
-#                   excelFile=outputExcelFile,
-#                   sheetName='Reconstructed Female Histogram',
-#                   startRow=7,
-#                   startCol=2)
-# eo.writeExcelData(data={index: item for index, item in enumerate(bayesian_histogram['Male'])},
-#                   excelFile=outputExcelFile,
-#                   sheetName='Reconstructed Male Histogram',
-#                   startRow=7,
-#                   startCol=2)
+print('checking the bayesian histogram classifier output against bayesian classifier output')
+print('[69, 17.5]', by.histogram_classifier_for_target(data, num_of_bins, bayesian_histogram, [69, 17.5], 'Female'))
+print('[66, 22]', by.histogram_classifier_for_target(data, num_of_bins, bayesian_histogram, [66, 22], 'Female'))
+print('[70, 21.5]', by.histogram_classifier_for_target(data, num_of_bins, bayesian_histogram, [70, 21.5], 'Female'))
+print('[69, 23.5]', by.histogram_classifier_for_target(data, num_of_bins, bayesian_histogram, [69, 23.5], 'Female'))
+
+eo.writeExcelData(data={index: item for index, item in enumerate(histogram['Female'])},
+                  excelFile=outputExcelFile,
+                  sheetName='Female Histogram',
+                  startRow=7,
+                  startCol=2)
+eo.writeExcelData(data={index: item for index, item in enumerate(histogram['Male'])},
+                  excelFile=outputExcelFile,
+                  sheetName='Male Histogram',
+                  startRow=7,
+                  startCol=2)
+
+eo.writeExcelData(data={index: item for index, item in enumerate(bayesian_histogram['Female'])},
+                  excelFile=outputExcelFile,
+                  sheetName='Reconstructed Female Histogram',
+                  startRow=7,
+                  startCol=2)
+eo.writeExcelData(data={index: item for index, item in enumerate(bayesian_histogram['Male'])},
+                  excelFile=outputExcelFile,
+                  sheetName='Reconstructed Male Histogram',
+                  startRow=7,
+                  startCol=2)

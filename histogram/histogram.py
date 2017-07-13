@@ -14,14 +14,14 @@ def create_bins(min_value, max_value, num_of_bins, data_type):
     :param num_of_bins: The number of bins in the histogram
     :param data_type: Type of bin values
     :return: A list of num_of_bins bin center values, and
-             step: A float representing step size
+             bin_size: A float representing step size
     """
     bins_by_start_value, bin_size = np.linspace(start=min_value,
                                                 stop=max_value,
                                                 num=num_of_bins,
                                                 retstep=True,
                                                 dtype=data_type,
-                                                endpoint=False)
+                                                endpoint=True)
     return bins_by_start_value + (bin_size / 2), bin_size
 
 
