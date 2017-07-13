@@ -32,7 +32,10 @@ def probability_density_function_nd(input_feature_vector, mean_vector, covarianc
     diff = input_feature_vector - mean_vector
     product = np.dot(diff, np.linalg.inv(covariance))
     product = np.dot(product, diff.T)
-    return 1 / (2 * math.pi * math.sqrt(bs.matrix_determinant(covariance))) * (math.e ** (-0.5 * product))
+    return 1 / (
+        (2 * math.pi) ** (len(input_feature_vector) / 2) *
+        math.sqrt(bs.matrix_determinant(covariance))
+    ) * (math.e ** (-0.5 * product))
 
 
 def bayesian_1d(input_value, mean, stddev, num_of_samples):
@@ -49,18 +52,18 @@ def bayesian_1d(input_value, mean, stddev, num_of_samples):
     return num_of_samples * probability_density_function_1d(input_value, mean, stddev)
 
 
-def bayesian_nd(input_feature_vector, mean, covariance, num_of_samples):
+def bayesian_nd(input_feature_vector, mean_vector, covariance, num_of_samples):
     """
     This function calculates the Bayesian equivalent histogram value for the given input value, using the PDF function.
     This function is valid for n-dimensional data.
 
     :param input_feature_vector: The input value for which equivalent histogram value needs to be calculated
-    :param mean: Mean of the distribution
+    :param mean_vector: Mean of the distribution
     :param covariance: Covariance of deviation of the distribution
     :param num_of_samples: The number of samples in the distribution
     :return: The Bayesian equivalent histogram value for the given input value
     """
-    return num_of_samples * probability_density_function_nd(input_feature_vector, mean, covariance)
+    return num_of_samples * probability_density_function_nd(input_feature_vector, mean_vector, covariance)
 
 
 def histogram_classifier(data, num_of_bins, histogram, query_feature_vector, min_max_values_force=None):

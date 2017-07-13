@@ -5,7 +5,7 @@ from histogram import histogram as hg
 from prepare_data import classification_problems as cp
 
 inputExcelFile = r"Assignment_2_Data_and_Template - Input.xlsx"
-outputExcelFile = r"Assignment_2_Data_and_Template - Output - Alternate.xlsx"
+outputExcelFile = r"Assignment_2_Data_and_Template - Output.xlsx"
 
 raw_data = eo.readExcel(inputExcelFile)
 label_column_index = 0
@@ -46,24 +46,24 @@ print('[66, 22]', by.histogram_classifier_for_target(data, num_of_bins, bayesian
 print('[70, 21.5]', by.histogram_classifier_for_target(data, num_of_bins, bayesian_histogram, [70, 21.5], 'Female'))
 print('[69, 23.5]', by.histogram_classifier_for_target(data, num_of_bins, bayesian_histogram, [69, 23.5], 'Female'))
 
-eo.writeExcelData(data={index: item for index, item in enumerate(histogram['Female'])},
-                  excelFile=outputExcelFile,
-                  sheetName='Female Histogram',
-                  startRow=7,
-                  startCol=2)
-eo.writeExcelData(data={index: item for index, item in enumerate(histogram['Male'])},
-                  excelFile=outputExcelFile,
-                  sheetName='Male Histogram',
-                  startRow=7,
-                  startCol=2)
-
-eo.writeExcelData(data={index: item for index, item in enumerate(bayesian_histogram['Female'])},
-                  excelFile=outputExcelFile,
-                  sheetName='Reconstructed Female Histogram',
-                  startRow=7,
-                  startCol=2)
-eo.writeExcelData(data={index: item for index, item in enumerate(bayesian_histogram['Male'])},
-                  excelFile=outputExcelFile,
-                  sheetName='Reconstructed Male Histogram',
-                  startRow=7,
-                  startCol=2)
+# eo.writeExcelData(data={index: item for index, item in enumerate(histogram['Female'])},
+#                   excelFile=outputExcelFile,
+#                   sheetName='Female Histogram',
+#                   startRow=7,
+#                   startCol=2)
+# eo.writeExcelData(data={index: item for index, item in enumerate(histogram['Male'])},
+#                   excelFile=outputExcelFile,
+#                   sheetName='Male Histogram',
+#                   startRow=7,
+#                   startCol=2)
+#
+# eo.writeExcelData(data={index: item for index, item in enumerate(bayesian_histogram['Female'])},
+#                   excelFile=outputExcelFile,
+#                   sheetName='Reconstructed Female Histogram',
+#                   startRow=7,
+#                   startCol=2)
+# eo.writeExcelData(data={index: item for index, item in enumerate(bayesian_histogram['Male'])},
+#                   excelFile=outputExcelFile,
+#                   sheetName='Reconstructed Male Histogram',
+#                   startRow=7,
+#                   startCol=2)
