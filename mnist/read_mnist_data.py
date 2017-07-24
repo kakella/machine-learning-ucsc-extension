@@ -56,3 +56,20 @@ def show(image):
     ax.xaxis.set_ticks_position('top')
     ax.yaxis.set_ticks_position('left')
     pyplot.show()
+
+
+# Everything that follows is my own code
+
+
+def get_mnist_data_for_numbers(numbers):
+    mnist = read('training', '..\\..\\mnist')
+    feature_vectors = []
+    class_labels = []
+    for i, fv in enumerate(mnist['feature_vectors']):
+        if mnist['class_labels'][i] in numbers:
+            feature_vectors.append(fv)
+            class_labels.append(mnist['class_labels'][i])
+    return {
+        'feature_vectors': np.array(feature_vectors),
+        'class_labels': np.array(class_labels)
+    }

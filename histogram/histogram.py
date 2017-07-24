@@ -107,9 +107,10 @@ def create_histogram_from_bayesian_params(data, num_of_bins):
         histogram_bin_sizes[str(i)] = bin_size
 
     cumulative_bin_size_multiplier = np.prod(list(histogram_bin_sizes.values()))
+    labeled_data, mean_vectors, covariances = by.prepare_data_for_bayesian_classifier(data)
 
     for t in it.product(*histogram_bins.values()):
-        value = by.bayesian_classifier(data, np.array(t))
+        value = by.bayesian_classifier(labeled_data, mean_vectors, covariances, np.array(t))
         for cl in unique_class_labels:
             class_label_values[cl].append(value[cl] * cumulative_bin_size_multiplier)
 

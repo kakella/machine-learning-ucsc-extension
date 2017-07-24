@@ -25,3 +25,16 @@ def get_data(raw_data, label_column_index, feature_count):
         'feature_vectors': feature_vectors,
         'class_labels': class_labels
     }
+
+
+def reformat_data(training_data):
+    unique_class_labels = set(training_data['class_labels'])
+    stacked_data = np.column_stack(training_data['feature_vectors'].values())
+    stacked_data = np.column_stack((training_data['class_labels'], stacked_data))
+
+    ld = {cl: [] for cl in unique_class_labels}
+    for d in stacked_data:
+        ld[d[0]].append(d[1:])
+
+    labeled_data = {cl[0]: np.array(cl[1]) for cl in ld.items()}
+    return labeled_data

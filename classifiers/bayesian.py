@@ -3,6 +3,7 @@ import math
 import numpy as np
 
 from histogram import histogram as hg
+from prepare_data import classification_problems as cp
 from statistics import basic as bs
 
 indeterminate_value = "Indeterminate"
@@ -113,42 +114,51 @@ def histogram_classifier_for_target(data, num_of_bins, histogram, query_feature_
         return bin_data[target_class_label] / total * 100
 
 
-def bayesian_classifier(data, query_feature_vector):
+def prepare_data_for_bayesian_classifier(data):
+    labeled_data = cp.reformat_data(data)
+    num_of_features = len(labeled_data)
+
+    mean_vectors = {}
+    covariances = {}
+
+    for cl in labeled_data.items():
+        if num_of_features > 1:
+            mean_vectors[cl[0]] = bs.mean_vector(cl[1])
+            covariances[cl[0]] = bs.covariance_matrix(cl[1])
+        else:
+            flattened_data = np.array(cl[1].flatten(), dtype=float)
+            mean_vectors[cl[0]] = bs.average(flattened_data)
+            covariances[cl[0]] = bs.stddev(flattened_data)
+
+    return labeled_data, mean_vectors, covariances
+
+
+def bayesian_classifier(labeled_data, mean_vectors, covariances, query_feature_vector):
     """
     This function finds the appropriate Bayesian classifier value for query feature vector in the
     n-dimensional data for every class label
 
-    TODO: make this more efficient and use idiomatic Python
-
-    :param data: A dictionary containing the following:
-        - feature_vectors: A dictionary from 'featureX' -> feature list. All features have same data size
-        - class_labels: A list
+    :param labeled_data: TODO
     :param query_feature_vector: The query vector for which we want to find bin number. In case of 1-dimensional data,
         this value will be a scalar
     :return: A dictionary of class labels -> Bayesian classifier values corresponding to the query feature vector
     """
-    unique_class_labels = set(data['class_labels'])
-    num_of_features = len(data['feature_vectors'])
-    stacked_data = np.column_stack(data['feature_vectors'].values())
-    stacked_data = np.column_stack((data['class_labels'], stacked_data))
 
-    ld = {cl: [] for cl in unique_class_labels}
-    for d in stacked_data:
-        ld[d[0]].append(d[1:])
-
-    labeled_data = {cl[0]: np.array(cl[1]) for cl in ld.items()}
     bayesian_values = {}
+    num_of_features = len(labeled_data)
 
     for cl in labeled_data.items():
         if num_of_features > 1:
-            mean_vector = bs.mean_vector(cl[1])
-            covariance = bs.covariance_matrix(cl[1])
-            bayesian_values[cl[0]] = bayesian_nd(query_feature_vector, mean_vector, covariance, len(cl[1]))
+            bayesian_values[cl[0]] = bayesian_nd(query_feature_vector,
+                                                 mean_vectors[cl[0]],
+                                                 covariances[cl[0]],
+                                                 len(cl[1]))
         else:
             flattened_data = np.array(cl[1].flatten(), dtype=float)
-            mean = bs.average(flattened_data)
-            stddev = bs.stddev(flattened_data)
-            bayesian_values[cl[0]] = bayesian_1d(query_feature_vector, mean, stddev, len(flattened_data))
+            bayesian_values[cl[0]] = bayesian_1d(query_feature_vector,
+                                                 mean_vectors[cl[0]],
+                                                 covariances[cl[0]],
+                                                 len(flattened_data))
 
     return bayesian_values
 
@@ -166,7 +176,8 @@ def bayesian_classifier_for_target(data, query_feature_vector, target_class_labe
     :return: The probability (as a percentage) of that feature vector for the target class label,
         or the string 'Indeterminate' if there is insufficient data to make a prediction
     """
-    bayesian_values = bayesian_classifier(data, query_feature_vector)
+    labeled_data, mean_vectors, covariances = prepare_data_for_bayesian_classifier(data)
+    bayesian_values = bayesian_classifier(labeled_data, mean_vectors, covariances, query_feature_vector)
     total = sum(bayesian_values.values())
     if total == 0:
         return indeterminate_value
