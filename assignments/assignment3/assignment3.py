@@ -87,6 +87,12 @@ mn.show(Rn.reshape((28, 28)))
 mn.show(Xrecp.reshape((28, 28)))
 mn.show(Xrecn.reshape((28, 28)))
 
+mn.show(histogram[positive_number])
+mn.show(histogram[negative_number])
+
+mn.show(bayesian_histogram[positive_number])
+mn.show(bayesian_histogram[negative_number])
+
 # plt.vector_to_image(28, 1, Xrecp.reshape((28, 28)))
 
 print('X after pca for positive: ', X_for_classification_p)
