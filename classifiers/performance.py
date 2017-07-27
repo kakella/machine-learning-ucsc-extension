@@ -113,4 +113,4 @@ def evaluate_training_accuracy(training_data, test_data, histogram, num_of_bins,
     classifier_output = run_binary_classifiers(training_data, test_data, histogram, num_of_bins,
                                                positive_class_label, negative_class_label)
     print(classifier_output)
-    return positive_predictive_value(classifier_output)
+    return accuracy(classifier_output)

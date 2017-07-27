@@ -3,6 +3,7 @@
 import os
 import struct
 
+import matplotlib.pyplot as plt
 import numpy as np
 
 """
@@ -51,7 +52,7 @@ def show(image):
     from matplotlib import pyplot
     fig = pyplot.figure()
     ax = fig.add_subplot(1, 1, 1)
-    imgplot = ax.imshow(image, cmap=mpl.cm.Greys)
+    imgplot = ax.imshow(image, cmap=plt.get_cmap('gray'))
     imgplot.set_interpolation('nearest')
     ax.xaxis.set_ticks_position('top')
     ax.yaxis.set_ticks_position('left')

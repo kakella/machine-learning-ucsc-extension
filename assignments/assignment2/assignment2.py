@@ -35,8 +35,6 @@ print('[66, 22]', by.bayesian_classifier_for_target(data, [66, 22], 'Female'))
 print('[70, 21.5]', by.bayesian_classifier_for_target(data, [70, 21.5], 'Female'))
 print('[69, 23.5]', by.bayesian_classifier_for_target(data, [69, 23.5], 'Female'))
 
-num_of_bins = 8
-
 bayesian_histogram = hg.create_histogram_from_bayesian_params(data, num_of_bins)
 
 print('bayesian histogram')

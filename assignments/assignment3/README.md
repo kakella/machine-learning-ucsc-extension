@@ -1,0 +1,18 @@
+# Assignment 3
+
+This assignment calls for using principal component analysis and histogram/Bayesian concepts for classifier design and evaluation. Use the attached Excel spreadsheet Assignment_3_ Submission_Template.xlsxPreview the documentView in a new window as a template to report your results. Except for cutting and pasting your results, do not alter the spreadsheet in any other way. This is the only recognized means of submitting this assignment. An extra sheet has been provided just in case you wish to make [optional] interesting observations.
+
+Read through the instructions and examine the spreadsheet carefully and understand what must be computed or described. Enjoy the transition from "I have been exposed to machine learning" to "I am becoming quite good at machine learning!" 
+
+1. Import handwritten digit data from yann.lecun.com/exdb/mnist (four files). You only need the training data for this assignment. If you use Python, refer to the Python code suggested in Read_MNIST.htmlView in a new window to read and parse the data.
+2. Prepare the data you will use for this assignment by limiting the imported data to two specific digits. The exact two digits that you will use for the rest of the assignment is given in a table following these instructions. The positive and negative class labels have also been identified for you.
+3. Prepare your X matrix and target vector T
+4. Go through the XZCVP procedure to produce P which is the 2D approximation to X. Produce a 2D scatterplot showing the two classes. The mean vector (mu) and two eigenvectors (v1, v2) calculated in completing this step must also be entered into the Excel template attached.
+5. Optional: Write a program, call a builtin function or use the “manual” procedure explained in class to convert any given 784 element feature vector in X to an image. No submission is required.
+6. Optional: Visually verify that the corresponding element of P, when projected back to 784 dimensions and visualized as an image still looks like the original image. That is, visually verify that reduction in dimension does not significantly compromise the identity of the samples. No submission is required.
+7. Build a histogram classifier and a Bayesian classifier (both 2D) assuming that the feature vectors are distributed normally in the reduced dimensional space. Note: All the specifications needed to apply the classifiers must be entered into the Excel template attached. For the histogram classifier, the specifications include the ranges (min, max) covered by the two features, number of bins (fixed for you at 25x25), and the histogram counts. For the Bayesian classifier, the specifications include the number of samples in the two classes, the mean vectors and covariance matrices. In order to use either classifier on a 784D query, the mean vectors and eigenvectors (Step 4 above) are needed.
+8. Exhibit any one representative positive feature vector xp and the corresponding mean-subtracted vector (zp), 2D representation (pp), reconstructed mean-subtracted vector (rp), and reconstructed mean-adjusted vector (xrecp). Do the same for any one representative negative feature vector xn.
+9. Run xp and xn through both the classifiers and record the results (e.g. what is xp recognized as? With what probability? See the Excel sheet to understand how to report the results.)
+10.Evaluate the training accuracy of your two classifiers (2D histogram and Bayesian) and record the results.
+
+Note: Helpful documents PCA_Simple_Example.htmlView in a new window and PCA_Simple_Example_Matlab.pdfPreview the documentView in a new window have been provided for guidance in the XZCVPR process.
