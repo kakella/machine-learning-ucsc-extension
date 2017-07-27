@@ -7,11 +7,12 @@ from histogram import histogram as hg
 from mnist import read_mnist_data as mn
 from prepare_data import classification_problems as cp
 from statistics import basic as bs
+from plots import plots as plt
 
 outputExcelFile = r"Assignment_3 - Output.xlsx"
 
 num_of_bins = 25
-num_of_principal_components = 1
+num_of_principal_components = 2
 positive_number = 9
 negative_number = 6
 mnist_data = mn.get_mnist_data_for_numbers([positive_number, negative_number])
@@ -20,7 +21,7 @@ mean_vector, Z, C, eigenvalues, V, Vpc, P, pca_data, R, Xrec = pca.principal_com
 print('pca_data: ', pca_data)
 print('P: ', P)
 labeled_data = cp.reformat_data(pca_data)
-# plt.scatter_plot(P, pca_data['class_labels'], positive_number, negative_number)
+plt.scatter_plot(P, pca_data['class_labels'], positive_number, negative_number)
 
 print('mnist data size: ', len(mnist_data['feature_vectors']), len(mnist_data['class_labels']))
 print('pca data size: ', len(pca_data['feature_vectors']['feature0']), len(pca_data['class_labels']))
@@ -53,8 +54,8 @@ print('positive class label: ', positive_representation['class_labels'])
 print('negative class label: ', negative_representation['class_labels'])
 
 # plt.vector_to_image(28, 1, positive_representation['feature_vectors'][0])
-# mn.show(positive_representation['feature_vectors'][0])
-# mn.show(negative_representation['feature_vectors'][0])
+mn.show(positive_representation['feature_vectors'][0])
+mn.show(negative_representation['feature_vectors'][0])
 
 mvp, Zp, Cp, evp, Vp, Vpcp, Pp, pdp, Rp, Xrecp = pca.principal_component_analysis(data=positive_representation,
                                                                                   mean_vector_force=mean_vector,
@@ -68,23 +69,23 @@ mvn, Zn, Cn, evn, Vn, Vpcn, Pn, pdn, Rn, Xrecn = pca.principal_component_analysi
                                                                                   num_of_pcs=num_of_principal_components)
 X_for_classification_n = np.column_stack(pdn['feature_vectors'].values())[0]
 
-# mn.show(mvp.reshape((28, 28)))
-# mn.show(mvn.reshape((28, 28)))
+mn.show(mvp.reshape((28, 28)))
+mn.show(mvn.reshape((28, 28)))
 
-# mn.show(Cp)
-# mn.show(Cn)
+mn.show(Cp)
+mn.show(Cn)
 
-# mn.show(Vpcp[0].reshape((28, 28)))
-# mn.show(Vpcp[1].reshape((28, 28)))
+mn.show(Vpcp[0].reshape((28, 28)))
+mn.show(Vpcp[1].reshape((28, 28)))
 
-# mn.show(Vpcn[0].T.reshape((28, 28)))
-# mn.show(Vpcn[1].T.reshape((28, 28)))
+mn.show(Vpcn[0].T.reshape((28, 28)))
+mn.show(Vpcn[1].T.reshape((28, 28)))
 
-# mn.show(Rp.reshape((28, 28)))
-# mn.show(Rn.reshape((28, 28)))
+mn.show(Rp.reshape((28, 28)))
+mn.show(Rn.reshape((28, 28)))
 
-# mn.show(Xrecp.reshape((28, 28)))
-# mn.show(Xrecn.reshape((28, 28)))
+mn.show(Xrecp.reshape((28, 28)))
+mn.show(Xrecn.reshape((28, 28)))
 
 # plt.vector_to_image(28, 1, Xrecp.reshape((28, 28)))
 
@@ -101,7 +102,7 @@ print('bayesian classification for positive: ',
 print('bayesian classification for negative: ',
       by.bayesian_classifier_for_target(pca_data, X_for_classification_n, negative_number))
 
-print(pf.evaluate_training_accuracy(pca_data, labeled_data, histogram, num_of_bins, positive_number, negative_number))
+# print(pf.evaluate_training_accuracy(pca_data, labeled_data, histogram, num_of_bins, positive_number, negative_number))
 
 # eo.writeExcelData(data=[{index: item for index, item in enumerate(mean_vector)}],
 #                   excelFile=outputExcelFile,
