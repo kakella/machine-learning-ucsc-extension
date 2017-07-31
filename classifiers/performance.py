@@ -1,4 +1,5 @@
 from classifiers import bayesian as by
+import numpy as np
 
 
 def evaluate_classifier_result(result, true_class_label, positive_class_label, negative_class_label):
@@ -59,6 +60,63 @@ def run_binary_classifiers(training_data, test_data, histogram, num_of_bins,
                 classifier_output['histogram'][evaluation] += 1
 
     return classifier_output
+
+
+def evaluate_binary_classifier(truth, result, positive_class_label, negative_class_label):
+    TP = TN = FP = FN = 0
+    for i, r in enumerate(result):
+        if r == truth[i]:
+            if r == positive_class_label:
+                TP += 1
+            else:
+                TN += 1
+        else:
+            if r == positive_class_label:
+                FP += 1
+            else:
+                FN += 1
+    return {
+        'TP': TP,
+        'TN': TN,
+        'FP': FP,
+        'FN': FN
+    }
+
+
+def binary_classifier_performance_metrics(classifier_output):
+    return {
+        'accuracy': (classifier_output['TP'] + classifier_output['TN']) /
+                    (classifier_output['TP'] + classifier_output['TN'] +
+                     classifier_output['FP'] + classifier_output['FN']),
+        'sensitivity': classifier_output['TP'] /
+                       (classifier_output['TP'] + classifier_output['FN']),
+        'specificity': classifier_output['TN'] /
+                       (classifier_output['FP'] + classifier_output['TN']),
+        'positive_predictive_value': classifier_output['TP'] /
+                                     (classifier_output['FP'] + classifier_output['TP']),
+        'negative_predictive_value': classifier_output['TN'] /
+                                     (classifier_output['FN'] + classifier_output['TN'])
+    }
+
+
+def evaluate_multiclass_classifier(truth, result):
+    class_labels = sorted(set(truth))
+    matrix_size = len(class_labels)
+    confusion_matrix = np.zeros((matrix_size, matrix_size))
+
+    for i, r in enumerate(result):
+        truth_index = class_labels.index(truth[i])
+        classified_index = class_labels.index(r)
+        confusion_matrix[truth_index][classified_index] += 1
+
+    return class_labels, confusion_matrix
+
+
+def multiclass_classifier_performance_metrics(confusion_matrix):
+    matrix_size = len(confusion_matrix)
+    return {
+        'positive_predictive_values': [confusion_matrix[i][i] / sum(confusion_matrix[:, i]) for i in range(matrix_size)]
+    }
 
 
 def accuracy(classifier_output):
