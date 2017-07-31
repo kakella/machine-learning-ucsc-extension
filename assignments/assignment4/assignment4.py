@@ -42,13 +42,13 @@ TR_type = ln.de_keslerize_columns(training_results[:, 1:])
 
 failure_result = pf.evaluate_binary_classifier(failure_column, TR_failure, 1, -1)
 failure_metrics = pf.binary_classifier_performance_metrics(failure_result)
-print('failure classificaton')
+print('failure classification')
 print(failure_result)
 print(failure_metrics)
 
 type_labels, type_result = pf.evaluate_multiclass_classifier(type_column, TR_type)
 type_metrics = pf.multiclass_classifier_performance_metrics(type_result)
-print('type classificaton')
+print('type classification')
 print(type_labels, type_result)
 print(type_metrics)
 
