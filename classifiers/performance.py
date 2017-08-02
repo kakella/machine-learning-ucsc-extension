@@ -114,9 +114,27 @@ def evaluate_multiclass_classifier(truth, result):
 
 def multiclass_classifier_performance_metrics(confusion_matrix):
     matrix_size = len(confusion_matrix)
-    return {
-        'positive_predictive_values': [confusion_matrix[i][i] / sum(confusion_matrix[:, i]) for i in range(matrix_size)]
-    }
+    metric_parameters = [
+        {
+            'TP': confusion_matrix[i][i],
+            'TN': np.sum(np.delete(np.delete(confusion_matrix, (i), axis=0), (i), axis=1)),
+            'FP': np.sum(confusion_matrix[:, i]) - confusion_matrix[i][i],
+            'FN': np.sum(confusion_matrix[i, :]) - confusion_matrix[i][i]
+        }
+        for i in range(matrix_size)
+    ]
+
+    print('metric_parameters:\n', metric_parameters)
+
+    return [
+        {
+            'accuracy': (d['TP'] + d['TN']) / (d['TP'] + d['TN'] + d['FP'] + d['FN']),
+            'sensitivity': d['TP'] / (d['TP'] + d['FN']),
+            'specificity': d['TN'] / (d['TN'] + d['FP']),
+            'positive_predictive_value': d['TP'] / (d['FP'] + d['TP']),
+            'negative_predictive_value': d['TN'] / (d['FN'] + d['TN'])
+        } for d in metric_parameters
+    ]
 
 
 def accuracy(classifier_output):
