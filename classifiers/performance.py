@@ -109,7 +109,7 @@ def evaluate_multiclass_classifier(truth, result):
         classified_index = class_labels.index(r)
         confusion_matrix[truth_index][classified_index] += 1
 
-    return class_labels, confusion_matrix
+    return class_labels, confusion_matrix, multiclass_classifier_performance_metrics(confusion_matrix)
 
 
 def multiclass_classifier_performance_metrics(confusion_matrix):
@@ -126,15 +126,43 @@ def multiclass_classifier_performance_metrics(confusion_matrix):
 
     print('metric_parameters:\n', metric_parameters)
 
-    return [
-        {
-            'accuracy': (d['TP'] + d['TN']) / (d['TP'] + d['TN'] + d['FP'] + d['FN']),
-            'sensitivity': d['TP'] / (d['TP'] + d['FN']),
-            'specificity': d['TN'] / (d['TN'] + d['FP']),
-            'positive_predictive_value': d['TP'] / (d['FP'] + d['TP']),
-            'negative_predictive_value': d['TN'] / (d['FN'] + d['TN'])
-        } for d in metric_parameters
-    ]
+    performance = []
+
+    for d in metric_parameters:
+        if d['TP'] + d['TN'] + d['FP'] + d['FN'] > 0:
+            accuracy = (d['TP'] + d['TN']) / (d['TP'] + d['TN'] + d['FP'] + d['FN'])
+        else:
+            accuracy = 0
+
+        if d['TP'] + d['FN'] > 0:
+            sensitivity = d['TP'] / (d['TP'] + d['FN'])
+        else:
+            sensitivity = 0
+
+        if d['TN'] + d['FP'] > 0:
+            specificity = d['TN'] / (d['TN'] + d['FP'])
+        else:
+            specificity = 0
+
+        if d['FP'] + d['TP'] > 0:
+            positive_predictive_value = d['TP'] / (d['FP'] + d['TP'])
+        else:
+            positive_predictive_value = 0
+
+        if d['FN'] + d['TN'] > 0:
+            negative_predictive_value = d['TN'] / (d['FN'] + d['TN'])
+        else:
+            negative_predictive_value = 0
+
+        performance.append({
+            'accuracy': accuracy,
+            'sensitivity': sensitivity,
+            'specificity': specificity,
+            'positive_predictive_value': positive_predictive_value,
+            'negative_predictive_value': negative_predictive_value
+        })
+
+    return performance
 
 
 def accuracy(classifier_output):
