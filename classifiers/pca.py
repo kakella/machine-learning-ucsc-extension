@@ -4,10 +4,18 @@ import numpy.linalg as nl
 from statistics import basic as bs
 
 
-def principal_component_analysis(data, mean_vector_force=None, covariance_force=None, num_of_pcs=-1):
-    X = np.array([fv.flatten() for fv in data['feature_vectors']])
+def principal_component_analysis(data, mean_vector_force=None, covariance_force=None, num_of_pcs=-1, datatype='unflattened'):
+    if datatype == 'unflattened':
+        X = np.array([fv.flatten() for fv in data['feature_vectors']])
+        T = data['class_labels']
+    else:
+        X = data
+        T = []
+
+    if num_of_pcs == -1:
+        num_of_pcs = len(X[0])
+
     print('len of X: ', len(X), ' width of X: ', len(X[0]))
-    T = data['class_labels']
     print('len of T: ', len(T))
 
     if mean_vector_force is not None:

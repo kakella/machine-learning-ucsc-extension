@@ -58,3 +58,30 @@ def classify_using_linear_classifier(X, W, init_value=1):
     print('T: ', len(T), len(T[0]))
 
     return T
+
+
+def generate_quadratic_X(X):
+    X_quad = X
+    print(X_quad)
+    num_of_cols = len(X[0])
+
+    for m in range(num_of_cols):
+        for n in range(m, num_of_cols):
+            X_quad = np.column_stack((X_quad, X[:, m] * X[:, n]))
+            # print(m, n, len(X_quad), len(X_quad[0]))
+
+    return X_quad
+
+
+def generate_cubic_X(X):
+    X_cubic = generate_quadratic_X(X)
+    print(X_cubic)
+    num_of_cols = len(X[0])
+
+    for m in range(num_of_cols):
+        for n in range(m, num_of_cols):
+            for o in range(n, num_of_cols):
+                X_cubic = np.column_stack((X_cubic, X[:, m] * X[:, n] * X[:, o]))
+                # print(m, n, o, len(X_cubic), len(X_cubic[0]))
+
+    return X_cubic

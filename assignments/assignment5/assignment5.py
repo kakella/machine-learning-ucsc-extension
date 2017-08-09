@@ -1,6 +1,8 @@
 from excelHelper import excel_operations as eo
 from classifiers import linear as ln
 from classifiers import performance as pf
+from classifiers import pca
+from plots import plots as plt
 import numpy as np
 
 inputExcelFile = r"Car_Data.xlsx"
@@ -26,30 +28,57 @@ persons_keslerized = ln.keslerize_column(persons)
 trunk_keslerized = ln.keslerize_column(trunk)
 safety_keslerized = ln.keslerize_column(safety)
 
-T = ln.keslerize_column(recommendation)
-T_2_classes = ln.keslerize_column(recommendation_2_classes)
-
 X = np.column_stack((price_keslerized,
                      maintenance_keslerized,
                      doors_keslerized,
                      persons_keslerized,
                      trunk_keslerized,
                      safety_keslerized))
-W = ln.mean_square_minimizer_linear_classifier(X, T)
-W_2_classes = ln.mean_square_minimizer_linear_classifier(X, T_2_classes)
 
-T_pred = np.dot(np.column_stack(([1] * num_rows, X)), W)
-T_pred_2_classes = np.dot(np.column_stack(([1] * num_rows, X)), W_2_classes)
 
-recommendation_prediction = ln.de_keslerize_columns(T_pred, recommendation)
-recommendation_prediction_2_classes = ln.de_keslerize_columns(T_pred_2_classes, recommendation_2_classes)
+def run_linear_classifier(X, recommendation):
+    Xa = np.column_stack(([1] * num_rows, X))
+    T = ln.keslerize_column(recommendation)
+    W = ln.mean_square_minimizer_linear_classifier(X, T)
+    T_pred = np.dot(Xa, W)
 
-class_labels, confusion_matrix, performance_metrics = pf.evaluate_multiclass_classifier(recommendation,
-                                                                                        recommendation_prediction)
-print('class_labels: \n{}\nconfusion_matrix: \n{}\nperformance_metrics: \n{}'
-      .format(class_labels, confusion_matrix, performance_metrics))
+    recommendation_prediction = ln.de_keslerize_columns(T_pred, recommendation)
+    class_labels, confusion_matrix, performance_metrics = pf.evaluate_multiclass_classifier(recommendation,
+                                                                                            recommendation_prediction)
+    print('class_labels: \n{}\nconfusion_matrix: \n{}\nperformance_metrics: \n{}'
+          .format(class_labels, confusion_matrix, performance_metrics))
 
-class_labels, confusion_matrix, performance_metrics = pf.evaluate_multiclass_classifier(recommendation_2_classes,
-                                                                                        recommendation_prediction_2_classes)
-print('class_labels: \n{}\nconfusion_matrix: \n{}\nperformance_metrics: \n{}'
-      .format(class_labels, confusion_matrix, performance_metrics))
+
+mean_vector, Z, C, eigenvalues, V, Vpc, P, Punf, R, Xrec = pca.principal_component_analysis(data=X,
+                                                                                            datatype='flattened')
+
+# plt.scatter_plot(P[:, :2], recommendation, 'good', 'unacc')
+
+X_quad = ln.generate_quadratic_X(X)
+X_cubic = ln.generate_cubic_X(X)
+
+X_quad_with_P = ln.generate_quadratic_X(P[:, :10])
+X_cubic_with_P = ln.generate_cubic_X(P[:, :10])
+
+print('\n\n*** original data, 4 class labels ***\n\n')
+run_linear_classifier(X, recommendation)
+print('\n\n*** original data, 2 class labels ***\n\n')
+run_linear_classifier(X, recommendation_2_classes)
+print('\n\n*** pca data, 4 class labels ***\n\n')
+run_linear_classifier(P[:, :2], recommendation)
+print('\n\n*** pca data 10 columns quadratic, 4 class labels ***\n\n')
+run_linear_classifier(X_quad_with_P, recommendation)
+print('\n\n*** pca data 10 columns cubic, 4 class labels ***\n\n')
+run_linear_classifier(X_cubic_with_P, recommendation)
+print('\n\n*** pca data 10 columns quadratic, 2 class labels ***\n\n')
+run_linear_classifier(X_quad_with_P, recommendation_2_classes)
+print('\n\n*** pca data 10 columns cubic, 2 class labels ***\n\n')
+run_linear_classifier(X_cubic_with_P, recommendation_2_classes)
+print('\n\n*** original data quadratic, 4 class labels ***\n\n')
+run_linear_classifier(X_quad, recommendation)
+print('\n\n*** original data cubic, 4 class labels ***\n\n')
+run_linear_classifier(X_cubic, recommendation)
+print('\n\n*** original data quadratic, 2 class labels ***\n\n')
+run_linear_classifier(X_quad, recommendation_2_classes)
+print('\n\n*** original data cubic, 2 class labels ***\n\n')
+run_linear_classifier(X_cubic, recommendation_2_classes)
