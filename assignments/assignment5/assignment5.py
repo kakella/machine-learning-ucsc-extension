@@ -18,7 +18,7 @@ persons = np.array(training_data[:, 3], dtype=str)
 trunk = np.array(training_data[:, 4], dtype=str)
 safety = np.array(training_data[:, 5], dtype=str)
 recommendation = np.array(training_data[:, 6], dtype=str)
-recommendation_2_classes = np.array(['unacc' if (d == 'acc' or d == 'unacc') else 'good' for d in training_data[:, 6]],
+recommendation_2_classes = np.array(['unacc' if (d == 'unacc' or d == 'acc') else 'good' for d in training_data[:, 6]],
                                     dtype=str)
 
 price_keslerized = ln.keslerize_column(price)

@@ -25,10 +25,10 @@ def keslerize_column(column_data):
 def de_keslerize_columns(keslerized_output_data, original_input_data=None):
     indexed_list = [d.tolist().index(max(d)) for d in keslerized_output_data]
     if original_input_data is None:
-        return indexed_list
+        return np.array(indexed_list)
     else:
         unique_values_sorted = sorted(set(original_input_data))
-        return [unique_values_sorted[d] for d in indexed_list]
+        return np.array([unique_values_sorted[d] for d in indexed_list])
 
 
 def mean_square_minimizer_linear_classifier(X, T, init_value=1):
